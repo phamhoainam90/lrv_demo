@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,5 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view("/{any}", "app")->where("any", ".*");
+Route::view("/admin/{any}", "app")->where("any", ".*");
+//Route::resource('account', 'AccountController');
+Route::get('/accounts', [AccountController::class, 'getList']);
+Route::get('/accounts/search', [AccountController::class, 'search']);
 

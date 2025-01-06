@@ -10,57 +10,37 @@
                                 <div class="row justify-content-center mb-3">
                                     <div class="col-md-6 mb-3 mb-md-0">
                                         <label for="exampleInputEmail1" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <input type="email" class="form-control" v-model="search.email" id="exampleInputEmail1" aria-describedby="emailHelp">
                                     </div>
                                     <div class="col-md-6 mb-3 mb-md-0">
                                         <label for="exampleInputPassword1" class="form-label">Name</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword1">
+                                        <input type="text" class="form-control" v-model="search.name" id="exampleInputPassword1">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="button" class="btn btn-dark" data-mdb-ripple-color="#ffffff"> Search </button>
+                                    <button type="button" class="btn btn-dark" data-mdb-ripple-color="#ffffff" @click="searchAccount()"> Search </button>
                                 </div>
                             </form>
                         </div>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#accountAddModal">
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#accountAddModal" style="float: right">
                             <i class="ri-add-line"></i> Create Account</button>
                         <table class="table table-striped">
                             <thead>
                             <tr>
                                 <th scope="col">ID</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
                                 <th scope="col">Handle</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-secondary mr-5">Edit</button>
-                                    <button type="button" class="btn btn-outline-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>
-                                    <button type="button" class="btn btn-outline-secondary mr-5">Edit</button>
-                                    <button type="button" class="btn btn-outline-danger">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
+                            <tr v-for="account in accounts">
+                                <th scope="row">{{account.id}}</th>
+                                <td>{{account.name}}</td>
+                                <td>{{account.email}}</td>
                                 <td>@mdo</td>
                                 <td>
                                     <button type="button" class="btn btn-outline-secondary mr-5">Edit</button>
@@ -91,70 +71,44 @@
             </div>
         </div>
     </section>
-    <div class="modal fade" id="accountAddModal" tabindex="-1">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="ri-add-line"></i> Create Account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body mt-4">
-                            <form>
-                                <div class="row mb-4">
-                                    <label for="inputText" class="col-sm-3 col-form-label fw-semibold">Name
-                                    </label>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control" placeholder="Name">
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <label for="inputText" class="col-sm-3 col-form-label fw-semibold">Email
-                                    </label>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control" placeholder="Email">
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <label for="inputText" class="col-sm-3 col-form-label fw-semibold">Password
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="password" class="form-control" placeholder="Password">
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <label for="inputText" class="col-sm-3 col-form-label fw-semibold">Password（confirm）
-                                    </label>
-                                    <div class="col-sm-4">
-                                        <input type="password" class="form-control" placeholder="Password（confirm）">
-                                    </div>
-                                </div>
-                                <div class="row mb-4">
-                                    <label for="inputPassword" class="col-sm-3 col-form-label fw-semibold">Note</label>
-                                    <div class="col-sm-9">
-                                        <textarea class="form-control" style="height: 100px" placeholder="Note"></textarea>
-                                    </div>
-                                </div>
-                            </form>
-                            <!-- End General Form Elements -->
-                        </div>
-
-                    </div>
-                    <div class="text-center mb-4">
-                        <button type="button" class="btn btn-secondary mx-4" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confModal">
-                            <i class="ri-check-line"></i> Create</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
+    <create-modal />
 </template>
+<script>
+    import CreateModal from "@/pages/admin/account/createModal.vue";
+    export default {
+        components: {CreateModal},
+        data() {
+            return {
+                accounts: [],
+                search: {
+                    name: '',
+                    email: ''
+                }
+            }
+        },
+        created() {
+          this.getListAccount();
+        },
+        methods: {
+            getListAccount() {
+                axios.get(`/accounts`).then( (response) => {
+                    this.accounts = response.data
+                }).catch((error) => {
+                    console.error('Error', error);
+                });
+            },
+            searchAccount() {
+                axios.get('/accounts/search', { params: this.search }).then( (response) => {
+                    this.accounts = response.data
+                }).catch((error) => {
+                    console.error('Error', error);
+                });
+
+            }
+        }
+    }
+
+</script>
 <style>
 html,
 body,
