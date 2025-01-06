@@ -1,4 +1,6 @@
 <template>
+    <Loading v-model:active="isLoading"
+             :can-cancel="false" :loader="'dots'"/>
     <section class="intro">
         <div class="h-100">
             <div class="mask d-flex align-items-center h-100">
@@ -10,7 +12,7 @@
                                 <div class="row justify-content-center mb-3">
                                     <div class="col-md-6 mb-3 mb-md-0">
                                         <label for="exampleInputEmail1" class="form-label">Email</label>
-                                        <input type="email" class="form-control" v-model="search.email" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                        <input type="text" class="form-control" v-model="search.email" id="exampleInputEmail1" aria-describedby="emailHelp">
                                     </div>
                                     <div class="col-md-6 mb-3 mb-md-0">
                                         <label for="exampleInputPassword1" class="form-label">Name</label>
@@ -18,21 +20,28 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="button" class="btn btn-dark" data-mdb-ripple-color="#ffffff" @click="searchAccount()"> Search </button>
+                                    <button @click.prevent="resetFormSearch()" class="btn btn-secondary mr-5">
+                                        <i class="ri-arrow-go-back-fill"></i> Clear</button>
+                                    <button type="button" class="btn btn-dark" data-mdb-ripple-color="#ffffff" @click.prevent="searchAccount()"> Search </button>
                                 </div>
                             </form>
                         </div>
                     </div>
+                    <a-button>Test button</a-button>
+                    <a-alert
+                        :message="alert + ' message'"
+                        description="Testttttt."
+                        :type="alert"
+                    />
                     <div>
-                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#accountAddModal" style="float: right">
-                            <i class="ri-add-line"></i> Create Account</button>
+                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#accountAddModal" style="float: right">Create Account</button>
                         <table class="table table-striped">
                             <thead>
                             <tr>
                                 <th scope="col">ID</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Handle</th>
+                                <th scope="col">Memo</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -41,10 +50,12 @@
                                 <th scope="row">{{account.id}}</th>
                                 <td>{{account.name}}</td>
                                 <td>{{account.email}}</td>
-                                <td>@mdo</td>
+                                <td>{{account.memo}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-outline-secondary mr-5">Edit</button>
-                                    <button type="button" class="btn btn-outline-danger">Delete</button>
+                                    <div style="float: right">
+                                        <button type="button" class="btn btn-outline-secondary mr-5">Edit</button>
+                                        <button type="button" class="btn btn-outline-danger">Delete</button>
+                                    </div>
                                 </td>
                             </tr>
                             </tbody>
@@ -83,7 +94,12 @@
                 search: {
                     name: '',
                     email: ''
-                }
+                },
+                searchReset: {
+                    name: '',
+                    email: ''
+                },
+                isLoading: false,
             }
         },
         created() {
@@ -91,19 +107,24 @@
         },
         methods: {
             getListAccount() {
+                this.isLoading = true;
                 axios.get(`/accounts`).then( (response) => {
                     this.accounts = response.data
                 }).catch((error) => {
                     console.error('Error', error);
-                });
+                }).finally(() => this.isLoading = false);
             },
             searchAccount() {
+                this.isLoading = true;
                 axios.get('/accounts/search', { params: this.search }).then( (response) => {
                     this.accounts = response.data
                 }).catch((error) => {
                     console.error('Error', error);
-                });
+                }).finally(() => this.isLoading = false);
 
+            },
+            resetFormSearch() {
+                this.search = { ...this.searchReset };
             }
         }
     }

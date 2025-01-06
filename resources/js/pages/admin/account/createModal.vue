@@ -51,9 +51,9 @@
                         </div>
 
                     </div>
-                    <div class="text-center mb-4">
+                    <div class="text-center mb-4 mt-5">
                         <button type="button" class="btn btn-secondary mx-4" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confModal">
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#confModal">
                             <i class="ri-check-line"></i> Create</button>
                     </div>
                 </div>
