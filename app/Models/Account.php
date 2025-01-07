@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Account extends Authenticatable
 {
+    use HasFactory;
 
     protected $table = 'accounts';
 

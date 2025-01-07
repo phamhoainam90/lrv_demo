@@ -61,3 +61,18 @@
         </div>
     </div>
 </template>
+<script>
+import {reactive, Reactive, ref} from "vue";
+
+export default {
+    setup() {
+        const account = reactive({
+
+        });
+
+        return {
+            account
+        }
+    }
+}
+</script>

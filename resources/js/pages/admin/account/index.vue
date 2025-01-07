@@ -4,11 +4,10 @@
     <section class="intro">
         <div class="h-100">
             <div class="mask d-flex align-items-center h-100">
-                <div class="container">
-                    <div class="card mask-custom p-4 mb-5">
+                <div class="container mt-5">
+                    <div class="card p-4 mb-5">
                         <div class="card-body">
-                            <p class="h1 font-weight-bold mb-4 text-white">Account</p>
-                            <form>
+                            <form @submit.prevent="searchAccount()">
                                 <div class="row justify-content-center mb-3">
                                     <div class="col-md-6 mb-3 mb-md-0">
                                         <label for="exampleInputEmail1" class="form-label">Email</label>
@@ -20,21 +19,27 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <button @click.prevent="resetFormSearch()" class="btn btn-secondary mr-5">
+                                    <button type="button" @click.prevent="resetFormSearch()" class="btn btn-secondary mr-5">
                                         <i class="ri-arrow-go-back-fill"></i> Clear</button>
-                                    <button type="button" class="btn btn-dark" data-mdb-ripple-color="#ffffff" @click.prevent="searchAccount()"> Search </button>
+                                    <button type="submit" class="btn btn-dark" data-mdb-ripple-color="#ffffff">
+                                        <SearchOutlined /> Search </button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    <a-button>Test button</a-button>
-                    <a-alert
-                        :message="alert + ' message'"
-                        description="Testttttt."
-                        :type="alert"
-                    />
+                    <h5>Ant design table</h5>
                     <div>
-                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#accountAddModal" style="float: right">Create Account</button>
+                        <button type="button" class="btn btn-outline-dark mb-5" data-bs-toggle="modal" data-bs-target="#accountAddModal" style="float: right">Create Account</button>
+                        <a-table :dataSource="accounts" :columns="columns" :pagination="{ pageSize: 5}">
+                            <template #bodyCell="{ column, record }">
+                                <template v-if="column.dataIndex === 'actions'">
+                                    <div style="float: right">
+                                        <button type="button" class="btn btn-outline-secondary mr-5">Edit</button>
+                                        <button type="button" class="btn btn-outline-danger">Delete</button>
+                                    </div>
+                                </template>
+                            </template>
+                        </a-table>
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -86,8 +91,9 @@
 </template>
 <script>
     import CreateModal from "@/pages/admin/account/createModal.vue";
+    import { SearchOutlined } from '@ant-design/icons-vue';
     export default {
-        components: {CreateModal},
+        components: {CreateModal,SearchOutlined},
         data() {
             return {
                 accounts: [],
@@ -100,6 +106,33 @@
                     email: ''
                 },
                 isLoading: false,
+                columns: [
+                    {
+                        title: 'ID',
+                        dataIndex: 'id',
+                        key: 'id',
+                    },
+                    {
+                        title: 'Name',
+                        dataIndex: 'name',
+                        key: 'name',
+                    },
+                    {
+                        title: 'Email',
+                        dataIndex: 'email',
+                        key: 'email',
+                    },
+                    {
+                        title: 'Memo',
+                        dataIndex: 'memo',
+                        key: 'memo',
+                    },
+                    {
+                        title: '',
+                        dataIndex: 'actions',
+                        key: 'actions',
+                    },
+                ],
             }
         },
         created() {

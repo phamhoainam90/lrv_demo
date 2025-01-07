@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Account;
 use App\Repositories\BaseRepository;
+use Illuminate\Support\Facades\DB;
 
 class AccountRepository extends BaseRepository
 {
@@ -25,5 +26,10 @@ class AccountRepository extends BaseRepository
             $q = $q->where('email', 'like', '%' . $email . '%');
         }
         return $q->get();
+    }
+
+    public function getList()
+    {
+        return $this->_model->get();
     }
 }

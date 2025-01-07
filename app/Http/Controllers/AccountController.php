@@ -13,7 +13,7 @@ class AccountController extends Controller
     ){}
 
     public function getList() {
-        return $this->accountRepository->getAll();
+        return $this->accountRepository->getList();
     }
 
     public function search(Request $request) {
